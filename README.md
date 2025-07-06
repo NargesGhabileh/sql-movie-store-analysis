@@ -2,19 +2,19 @@
 -- Part_1
 
 
-1.	We will need a list of all staff members, including their first and last names, 
+1. We will need a list of all staff members, including their first and last names, 
 email addresses, and the store identification number where they work. 
 
 ```sql
 SELECT 
 	first_name, 
-    last_name, 
+  	last_name, 
 	email, 
-    store_id
+    	store_id
 FROM staff;
 ```
 
-2.	We will need separate counts of inventory items held at each of your two stores. 
+2. We will need separate counts of inventory items held at each of your two stores. 
 
 ```sql
 SELECT 
@@ -25,19 +25,19 @@ GROUP BY
 	store_id;
 ```
 
-3.	We will need a count of active customers for each of your stores. Separately, please. 
+3. We will need a count of active customers for each of your stores. Separately, please. 
 
 ```sql
 SELECT 
 	store_id, 
-    COUNT(customer_id) AS active_customers
+  	COUNT(customer_id) AS active_customers
 FROM customer
 WHERE active = 1
 GROUP BY 
 	store_id;
 ```
 
-4.	In order to assess the liability of a data breach, we will need you to provide a count 
+4. In order to assess the liability of a data breach, we will need you to provide a count 
 of all customer email addresses stored in the database. 
 
 ```sql
@@ -46,14 +46,14 @@ SELECT
 FROM customer;
 ```
 
-5.	We are interested in how diverse your film offering is as a means of understanding how likely 
+5. We are interested in how diverse your film offering is as a means of understanding how likely 
 you are to keep customers engaged in the future. Please provide a count of unique film titles 
 you have in inventory at each store and then provide a count of the unique categories of films you provide. 
 
 ```sql
 SELECT 
 	store_id, 
-    COUNT(DISTINCT film_id) AS unique_films
+   	COUNT(DISTINCT film_id) AS unique_films
 FROM inventory
 GROUP BY 
 	store_id; 
@@ -63,37 +63,37 @@ SELECT
 FROM category;
 ```
 
-6.	We would like to understand the replacement cost of your films. 
+6. We would like to understand the replacement cost of your films. 
 Please provide the replacement cost for the film that is least expensive to replace, 
 the most expensive to replace, and the average of all films you carry. ``	
 
 ```sql
 SELECT 
 	MIN(replacement_cost) AS least_expensive, 
-    MAX(replacement_cost) AS most_expensive, 
-    AVG(replacement_cost) AS average_replacement_cost
+  	MAX(replacement_cost) AS most_expensive, 
+    	AVG(replacement_cost) AS average_replacement_cost
 FROM film;
 ```
 
-7.	We are interested in having you put payment monitoring systems and maximum payment 
+7. We are interested in having you put payment monitoring systems and maximum payment 
 processing restrictions in place in order to minimize the future risk of fraud by your staff. 
 Please provide the average payment you process, as well as the maximum payment you have processed.
 
 ```sql
 SELECT
 	AVG(amount) AS average_payment, 
-    MAX(amount) AS max_payment
+ 	MAX(amount) AS max_payment
 FROM payment;
 ```
 
-8.	We would like to better understand what your customer base looks like. 
+8. We would like to better understand what your customer base looks like. 
 Please provide a list of all customer identification values, with a count of rentals 
 they have made all-time, with your highest volume customers at the top of the list.
 
 ```sql
 SELECT 
 	customer_id, 
-    COUNT(rental_id) AS number_of_rentals
+  	COUNT(rental_id) AS number_of_rentals
 FROM rental
 GROUP BY 
 	customer_id
@@ -110,52 +110,52 @@ of each property (street address, district, city, and country please).
 ```sql
 SELECT 
 	staff.first_name AS manager_first_name, 
-    staff.last_name AS manager_last_name,
-    address.address, 
-    address.district, 
-    city.city, 
-    country.country
+    	staff.last_name AS manager_last_name,
+    	address.address, 
+    	address.district, 
+    	city.city, 
+    	country.country
 
 FROM store
-	  LEFT JOIN staff ON store.manager_staff_id = staff.staff_id
-    LEFT JOIN address ON store.address_id = address.address_id
-    LEFT JOIN city ON address.city_id = city.city_id
-    LEFT JOIN country ON city.country_id = country.country_id
+	LEFT JOIN staff ON store.manager_staff_id = staff.staff_id
+    	LEFT JOIN address ON store.address_id = address.address_id
+    	LEFT JOIN city ON address.city_id = city.city_id
+    	LEFT JOIN country ON city.country_id = country.country_id
 ;
 	```
 
-2.	I would like to get a better understanding of all of the inventory that would come along with the business. 
+2. I would like to get a better understanding of all of the inventory that would come along with the business. 
 Please pull together a list of each inventory item you have stocked, including the store_id number, 
 the inventory_id, the name of the film, the film’s rating, its rental rate and replacement cost. 
 
 ```sql
-SELECT 
+SELECT
 	inventory.store_id, 
-    inventory.inventory_id, 
-    film.title, 
-    film.rating, 
-    film.rental_rate, 
-    film.replacement_cost
+    	inventory.inventory_id, 
+    	film.title, 
+    	film.rating, 
+    	film.rental_rate, 
+    	film.replacement_cost
 FROM inventory
 	LEFT JOIN film
-		ON inventory.film_id = film.film_id
+	ON inventory.film_id = film.film_id
 ;
 ```
 
-3.	From the same list of films you just pulled, please roll that data up and provide a summary level overview 
+3. From the same list of films you just pulled, please roll that data up and provide a summary level overview 
 of your inventory. We would like to know how many inventory items you have with each rating at each store. 
 
 ```sql
 SELECT 
 	inventory.store_id, 
-    film.rating, 
-    COUNT(inventory_id) AS inventory_items
+   	film.rating, 
+ 	COUNT(inventory_id) AS inventory_items
 FROM inventory
 	LEFT JOIN film
-		ON inventory.film_id = film.film_id
+	ON inventory.film_id = film.film_id
 GROUP BY 
 	inventory.store_id,
-    film.rating
+  	film.rating
 ;
 ```
 
@@ -167,10 +167,10 @@ sliced by store and film category.
 ```sql
 SELECT 
 	store_id, 
-    category.name AS category, 
+  	category.name AS category, 
 	COUNT(inventory.inventory_id) AS films, 
-    AVG(film.replacement_cost) AS avg_replacement_cost, 
-    SUM(film.replacement_cost) AS total_replacement_cost
+    	AVG(film.replacement_cost) AS avg_replacement_cost, 
+    	SUM(film.replacement_cost) AS total_replacement_cost
 FROM inventory
 	LEFT JOIN film
 		ON inventory.film_id = film.film_id
@@ -180,33 +180,33 @@ FROM inventory
 		ON category.category_id = film_category.category_id
 GROUP BY 
 	store_id, 
-    category.name
+  	category.name
 ORDER BY 
 	SUM(film.replacement_cost) DESC;
 ```
 
-5.	We want to make sure you folks have a good handle on who your customers are. Please provide a list 
+5. We want to make sure you folks have a good handle on who your customers are. Please provide a list 
 of all customer names, which store they go to, whether or not they are currently active, 
 and their full addresses – street address, city, and country. 
 
 ```sql
 SELECT 
 	customer.first_name, 
-    customer.last_name, 
-    customer.store_id,
-    customer.active, 
-    address.address, 
-    city.city, 
-    country.country
+  	customer.last_name, 
+    	customer.store_id,
+    	customer.active, 
+    	address.address, 
+    	city.city, 
+    	country.country
 
 FROM customer
 	LEFT JOIN address ON customer.address_id = address.address_id
-    LEFT JOIN city ON address.city_id = city.city_id
-    LEFT JOIN country ON city.country_id = country.country_id
+   	LEFT JOIN city ON address.city_id = city.city_id
+    	LEFT JOIN country ON city.country_id = country.country_id
 ;
 ```
 
-6.	We would like to understand how much your customers are spending with you, and also to know 
+6. We would like to understand how much your customers are spending with you, and also to know 
 who your most valuable customers are. Please pull together a list of customer names, their total 
 lifetime rentals, and the sum of all payments you have collected from them. It would be great to 
 see this ordered on total lifetime value, with the most valuable customers at the top of the list. 
@@ -214,17 +214,17 @@ see this ordered on total lifetime value, with the most valuable customers at th
 ```sql
 SELECT 
 	customer.first_name, 
-    customer.last_name, 
-    COUNT(rental.rental_id) AS total_rentals, 
-    SUM(payment.amount) AS total_payment_amount
+    	customer.last_name, 
+    	COUNT(rental.rental_id) AS total_rentals, 
+    	SUM(payment.amount) AS total_payment_amount
 
 FROM customer
 	LEFT JOIN rental ON customer.customer_id = rental.customer_id
-    LEFT JOIN payment ON rental.rental_id = payment.rental_id
+    	LEFT JOIN payment ON rental.rental_id = payment.rental_id
 
 GROUP BY 
 	customer.first_name,
-    customer.last_name
+   	customer.last_name
 
 ORDER BY 
 	SUM(payment.amount) DESC
@@ -239,18 +239,18 @@ it would be good to include which company they work with.
 ```sql
 SELECT
 	'investor' AS type, 
-    first_name, 
-    last_name, 
-    company_name
+    	first_name, 
+   	last_name, 
+    	company_name
 FROM investor
 
 UNION 
 
-SELECT 
+SELECT
 	'advisor' AS type, 
-    first_name, 
-    last_name, 
-    NULL
+    	first_name, 
+    	last_name, 
+    	NULL
 FROM advisor;
 ```
 
@@ -263,19 +263,18 @@ Finally, how about actors with just one award?
 ```sql
 SELECT
 	CASE 
-		WHEN actor_award.awards = 'Emmy, Oscar, Tony ' THEN '3 awards'
+	WHEN actor_award.awards = 'Emmy, Oscar, Tony ' THEN '3 awards'
         WHEN actor_award.awards IN ('Emmy, Oscar','Emmy, Tony', 'Oscar, Tony') THEN '2 awards'
-		ELSE '1 award'
+	ELSE '1 award'
 	END AS number_of_awards, 
     AVG(CASE WHEN actor_award.actor_id IS NULL THEN 0 ELSE 1 END) AS pct_w_one_film
 	
 FROM actor_award
 	
-
 GROUP BY 
 	CASE 
-		WHEN actor_award.awards = 'Emmy, Oscar, Tony ' THEN '3 awards'
+	WHEN actor_award.awards = 'Emmy, Oscar, Tony ' THEN '3 awards'
         WHEN actor_award.awards IN ('Emmy, Oscar','Emmy, Tony', 'Oscar, Tony') THEN '2 awards'
-		ELSE '1 award'
+	ELSE '1 award'
 	END
 ```
