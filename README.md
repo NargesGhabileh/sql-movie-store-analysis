@@ -1,4 +1,4 @@
-# sql-movie-store-analysis
+# SQL-movie-store-analysis
 -- Part_1
 
 
